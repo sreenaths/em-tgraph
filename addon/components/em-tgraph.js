@@ -3,7 +3,7 @@ import Ember from 'ember';
 import layout from '../templates/components/em-tgraph';
 
 import fullscreen from '../utils/fullscreen';
-import GraphView from '../utils/fullscreen';
+import GraphView from '../utils/graph-view';
 import DataProcessor from '../utils/data-processor';
 
 export default Ember.Component.extend({
