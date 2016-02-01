@@ -1,2 +1,4 @@
-# em-tgraph
-An Ember addon for plotting a graph in a tree layout
+# Em-tgraph
+
+##This package is under development. Will be ready for public from version 0.1.0.
+##Current version is for apache/tez/tez-ui2
