@@ -41,9 +41,6 @@
     "ember-resolver": "^2.0.3"
   },
   "keywords": [
-    "ember-addon",
-    "component",
-    "table",
     "ember-addon"
   ],
   "dependencies": {
