@@ -18,7 +18,9 @@ export default Ember.Component.extend({
   hideAdditionals: false,
   isFullscreen: false,
 
-  pathname: window.location.pathname,
+  pathname: Ember.computed(function() {
+    return window.location.pathname;
+  }).volatile(),
 
   _onOrientationChange: function () {
   }.observes('isHorizontal'),
