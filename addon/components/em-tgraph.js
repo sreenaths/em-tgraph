@@ -18,9 +18,18 @@ export default Ember.Component.extend({
   hideAdditionals: false,
   isFullscreen: false,
 
-  pathname: Ember.computed(function() {
-    return window.location.pathname;
-  }).volatile(),
+  styles: Ember.computed(function () {
+    var pathname = window.location.pathname,
+        safe = Ember.String.htmlSafe;
+    return {
+      vertex: safe(`fill: url(${pathname}#vertex-grad); filter: url(${pathname}#grey-glow)`),
+      input: safe(`fill: url(${pathname}#input-grad); filter: url(${pathname}#grey-glow)`),
+      output: safe(`fill: url(${pathname}#output-grad); filter: url(${pathname}#grey-glow)`),
+      task: safe(`fill: url(${pathname}#task-grad); filter: url(${pathname}#grey-glow)`),
+      io: safe(`fill: url(${pathname}#input-grad); filter: url(${pathname}#grey-glow)`),
+      group: safe(`fill: url(${pathname}#group-grad); filter: url(${pathname}#grey-glow)`),
+    };
+  }),
 
   _onOrientationChange: function () {
   }.observes('isHorizontal'),

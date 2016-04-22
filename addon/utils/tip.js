@@ -105,9 +105,7 @@ var Tip = {
 
         showAbove = point.y < windMid,
         offsetX = 0,
-        width = 0,
-
-        svgLeft = _svg.offset().left;
+        width = 0;
 
     if(_data !== data) {
       _data = data;
@@ -116,42 +114,37 @@ var Tip = {
       _setData(data);
     }
 
-    if(point.x > svgLeft && point.x < svgLeft + _svg.width()) {
-      if(showAbove) {
-        _element.removeClass('below');
-        _element.addClass('above');
-      }
-      else {
-        _element.removeClass('above');
-        _element.addClass('below');
-
-        point.y -= _element.height();
-      }
-
-      width = _element.width();
-      offsetX = (width - 11) >> 1;
-
-      if(point.x - offsetX < 0) {
-        offsetX = point.x - 20;
-      }
-      else if(point.x + offsetX > winWidth) {
-        offsetX = point.x - (winWidth - 10 - width);
-      }
-
-      _bubble.css({
-        left: -offsetX
-      });
-
-      _element.addClass('show');
-
-      _element.css({
-        left: point.x,
-        top: point.y
-      });
+    if(showAbove) {
+      _element.removeClass('below');
+      _element.addClass('above');
     }
     else {
-      _element.removeClass('show');
+      _element.removeClass('above');
+      _element.addClass('below');
+
+      point.y -= _element.height();
     }
+
+    width = _element.width();
+    offsetX = (width - 11) >> 1;
+
+    if(point.x - offsetX < 0) {
+      offsetX = point.x - 20;
+    }
+    else if(point.x + offsetX > winWidth) {
+      offsetX = point.x - (winWidth - 10 - width);
+    }
+
+    _bubble.css({
+      left: -offsetX
+    });
+
+    _element.addClass('show');
+
+    _element.css({
+      left: point.x,
+      top: point.y
+    });
   },
   /**
    * Reposition the tooltip based on last passed data & node.

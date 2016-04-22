@@ -395,6 +395,10 @@ function _onMouseOver(d) {
           value = d.get('data.' + property.contentPath);
         }
 
+        if(property.cellComponentName === "date-formatter") {
+          value = moment(value).format("DD MMM YYYY HH:mm:ss");
+        }
+
         if(typeof value !== 'object') {
           list[property.get('headerTitle')] = value;
         }
@@ -730,7 +734,7 @@ function _update() {
  * @param container {DOM element} Element onto which events are attached.
  * @param g {d3 DOM element} SVG(d3) element that will be moved or scaled
  */
-function _attachPanZoom(container, g) {
+function _attachPanZoom(container, g, element) {
   var SCALE_TUNER = 1 / 700,
       MIN_SCALE = 0.5,
       MAX_SCALE = 2;
@@ -824,8 +828,9 @@ function _attachPanZoom(container, g) {
     event.preventDefault();
   }
 
+  Ember.$(element).on('mousewheel', onWheel);
+
   container
-  .on('mousewheel', onWheel)
   .mousedown(function (event){
     prevX = event.pageX;
     prevY = event.pageY;
@@ -910,7 +915,7 @@ var GraphView = {
     _treeData.x0 = 0;
     _treeData.y0 = 0;
 
-    _panZoom = _attachPanZoom(_svg, _g);
+    _panZoom = _attachPanZoom(_svg, _g, element);
 
     _setLayout(LAYOUTS.topToBottom);
   },
