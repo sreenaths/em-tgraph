@@ -1,7 +1,7 @@
 {
   "name": "em-tgraph",
-  "version": "0.0.6",
-  "description": "0.0.0 - Under development",
+  "version": "0.0.7",
+  "description": "Under development",
   "directories": {
     "doc": "doc",
     "test": "tests"
