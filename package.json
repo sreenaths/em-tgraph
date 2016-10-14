@@ -1,6 +1,6 @@
 {
   "name": "em-tgraph",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "0.0.0 - Under development",
   "directories": {
     "doc": "doc",
@@ -19,11 +19,11 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
-    "em-helpers": "0.5.8",
-    "ember-cli": "1.13.13",
+    "em-helpers": "0.5.14",
+    "ember-cli": "^1.13.13",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.5",
-    "ember-cli-content-security-policy": "0.4.0",
+    "ember-cli-content-security-policy": "^0.4.0",
     "ember-cli-d3": "1.1.2",
     "ember-cli-dependency-checker": "^1.1.0",
     "ember-cli-font-awesome": "1.4.0",
@@ -33,7 +33,7 @@
     "ember-cli-mousewheel": "0.1.5",
     "ember-cli-numeral": "^0.1.2",
     "ember-cli-qunit": "^1.0.4",
-    "ember-cli-release": "0.2.8",
+    "ember-cli-release": "^0.2.8",
     "ember-cli-sri": "^1.2.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-data": "2.1.0",
@@ -47,7 +47,7 @@
   "dependencies": {
     "ember-cli-htmlbars": "^1.0.1",
     "ember-cli-less": "^1.4.0",
-    "phantomjs": "^1.9.19"
+    "phantomjs-prebuilt": "2.1.13"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

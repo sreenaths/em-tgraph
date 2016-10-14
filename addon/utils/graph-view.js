@@ -1,6 +1,7 @@
 /*global d3*/
 
 import Ember from 'ember';
+import moment from 'moment';
 
 import DataProcessor from './data-processor';
 import Tip from './tip';
