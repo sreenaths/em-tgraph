@@ -77,6 +77,11 @@ var Tip = {
     _svg = svg;
     _svgPoint = svg[0].createSVGPoint();
   },
+  showTip: function () {
+    if(_data) {
+      _element.addClass('show');
+    }
+  },
   /**
    * Display a tooltip over an svg element.
    * @param node {SVG Element} Svg element over which tooltip must be displayed.
@@ -139,7 +144,7 @@ var Tip = {
       left: -offsetX
     });
 
-    _element.addClass('show');
+    Ember.run.debounce(Tip, "showTip", 500);
 
     _element.css({
       left: point.x,
