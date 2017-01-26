@@ -172,7 +172,7 @@ function _addTaskBubble(node, d) {
   group.attr('class', 'task-bubble');
   group.append('use').attr('xlink:href', '#task-bubble');
   translateIfIE(group.append('text')
-      .text(_trimText(d.get('data.totalTasks'), 3)), 0, 4);
+      .text(_trimText(d.get('data.totalTasks') || 0, 3)), 0, 4);
 
   translateIfIE(group, 38, -15);
 }
@@ -398,7 +398,14 @@ function _onMouseOver(d) {
         }
 
         if(property.cellComponentName === "date-formatter") {
-          value = moment(value).format("DD MMM YYYY HH:mm:ss");
+          value = moment(value).format("DD MMM YYYY HH:mm:ss:SSS");
+        }
+
+        if(property.get("id") === "progress" && value) {
+          value = Math.round(value * 100) + "%";
+        }
+        else if(property.get("id") === "duration" && value) {
+          value = value + " ms";
         }
 
         if(typeof value !== 'object') {
@@ -433,7 +440,7 @@ function _onMouseOver(d) {
       };
     break;
     case "task":
-      var totalTasks = d.get('data.totalTasks');
+      var totalTasks = d.get('data.totalTasks') || 0;
       tooltipData.title = totalTasks > 1 ? `${totalTasks} Tasks` : `${totalTasks} Task`;
 
       if(!isIE) {
@@ -484,6 +491,19 @@ function _onMouseOver(d) {
         tooltipData.text = d.get('source.type') === "input" ? "Source link" : "Sink link";
       }
     break;
+  }
+
+  if(tooltipData.kvList) {
+    let kvList = tooltipData.kvList,
+        newKVList = {};
+
+    Object.keys(kvList).forEach(function (key) {
+      if(kvList[key]) {
+        newKVList[key] = kvList[key];
+      }
+    });
+
+    tooltipData.kvList = newKVList;
   }
 
   _tip.show(node, tooltipData, event);
