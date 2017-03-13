@@ -157,6 +157,7 @@ export default Ember.Controller.extend({
         "edgeDestinationClass": "org.apache.tez.runtime.library.input.OrderedGroupedKVInput"
       }
     ]
-  }
+  },
+  vertexProperties: []
 
 });
