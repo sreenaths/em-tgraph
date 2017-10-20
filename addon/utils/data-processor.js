@@ -431,7 +431,7 @@ var _data = null; // Raw dag plan data
  * Creates primary skeletal structure with vertices and inputs as nodes,
  * All child vertices & inputs will be added to an array property named children
  * As we are trying to treefy graph data, nodes might reoccur. Reject if its in
- * the ancestral chain, and if the new depth is lower (Higher value) than the old
+ * the ancestral chain, and if the new depth is lower than the old
  * reposition the node.
  *
  * @param vertex {VertexDataNode} Root vertex of current sub tree
@@ -448,7 +448,10 @@ function _treefyData(vertex, depth) {
     var child = _data.vertices.get(_data.edges.get(edgeId).get('inputVertexName'));
     if(!child.isSelfOrAncestor(vertex)) {
       if(child.depth) {
-        if(child.depth < depth) {
+        var siblings = child.get('outEdgeIds');
+        var shouldCompress = siblings ? siblings.length === 2 : true;
+        var shouldDecompress = siblings ? siblings.length > 2 : false;
+        if((shouldCompress && child.depth > (depth + 1)) || (shouldDecompress && child.depth < (depth + 1))) {
           parentChildren = child.get('treeParent.children');
           if(parentChildren) {
             parentChildren.removeObject(child);
@@ -519,52 +522,51 @@ function _normalizeVertexTree(vertex) {
 function _addOutputs(vertex) {
   var childVertices = vertex.get('children'),
       childrenWithOutputs = [],
-
-      midIndex,
-
       left = [],
       right = [];
 
   // For a symmetric display of output nodes
   if(childVertices && childVertices.length) {
-    midIndex = Math.floor(childVertices.length / 2);
-    if(childVertices.length % 2 === 0) {
-      midIndex--;
-    }
+    var middleChildIndex = Math.floor((childVertices.length - 1) / 2);
 
     childVertices.forEach(function (child, index) {
-      var additionals = _addOutputs(child),
-          outputs,
-          mid;
-
+      var additionals = _addOutputs(child);
       childrenWithOutputs.push.apply(childrenWithOutputs, additionals.left);
       childrenWithOutputs.push(child);
       childrenWithOutputs.push.apply(childrenWithOutputs, additionals.right);
+      var downstream = child.get('outEdgeIds');
 
-      outputs = child.get('outputs');
+      var outputs = child.get('outputs');
       if(outputs && outputs.length) {
-        mid = outputs.length / 2;
-
-        outputs.forEach(function (output) {
-          output.depth = vertex.depth;
-        });
-
-        if(index < midIndex) {
-          left.push.apply(left, outputs);
-        }
-        else if(index > midIndex) {
-          right.push.apply(right, outputs);
+        var middleOutputIndex = Math.floor((outputs.length - 1) / 2);
+        if (downstream) {
+          if(index < middleChildIndex) {
+            left.push.apply(left, outputs);
+          }
+          else if(index > middleChildIndex) {
+            right.push.apply(right, outputs);
+          }
+          else {
+            left.push.apply(left, outputs.slice(0, middleOutputIndex + 1));
+            right.push.apply(right, outputs.slice(middleOutputIndex + 1));
+          }
         }
         else {
-          left.push.apply(left, outputs.slice(mid));
-          right.push.apply(right, outputs.slice(0, mid));
+          childrenWithOutputs.removeObject(child);
+
+          outputs.forEach(function (output, index) {
+            output.depth = vertex.depth;
+            if (index === middleOutputIndex) {
+              output._setChildren([child]);
+            }
+            childrenWithOutputs.push(output);
+          });
         }
       }
     });
 
     vertex._setChildren(childrenWithOutputs);
   }
-
   return {
     left: left,
     right: right
