@@ -1,6 +1,6 @@
 {
   "name": "em-tgraph",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Under development",
   "directories": {
     "doc": "doc",
@@ -29,7 +29,7 @@
     "ember-cli-font-awesome": "1.4.0",
     "ember-cli-htmlbars-inline-precompile": "^0.3.1",
     "ember-cli-inject-live-reload": "^1.3.1",
-    "ember-cli-moment-shim": "0.7.3",
+    "ember-cli-moment-shim": "3.5.0",
     "ember-cli-mousewheel": "0.1.5",
     "ember-cli-numeral": "^0.1.2",
     "ember-cli-qunit": "^1.0.4",
