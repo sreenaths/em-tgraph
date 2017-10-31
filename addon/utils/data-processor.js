@@ -458,7 +458,7 @@ function _treefyData(vertex, depth) {
           }
         }
         else {
-          return;
+          return child;
         }
       }
       child.setParent(vertex);
