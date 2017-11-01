@@ -449,7 +449,7 @@ function _treefyData(vertex, depth) {
     if(!child.isSelfOrAncestor(vertex)) {
       if(child.depth) {
         var siblings = child.get('outEdgeIds');
-        var shouldCompress = siblings ? siblings.length === 2 : true;
+        var shouldCompress = siblings ? siblings.length <= 2 : true;
         var shouldDecompress = siblings ? siblings.length > 2 : false;
         if((shouldCompress && child.depth > (depth + 1)) || (shouldDecompress && child.depth < (depth + 1))) {
           parentChildren = child.get('treeParent.children');
@@ -531,12 +531,14 @@ function _addOutputs(vertex) {
 
     childVertices.forEach(function (child, index) {
       var additionals = _addOutputs(child);
-      childrenWithOutputs.push.apply(childrenWithOutputs, additionals.left);
-      childrenWithOutputs.push(child);
-      childrenWithOutputs.push.apply(childrenWithOutputs, additionals.right);
       var downstream = child.get('outEdgeIds');
-
       var outputs = child.get('outputs');
+
+      if (!(outputs && outputs.length) || downstream) {
+        childrenWithOutputs.push.apply(childrenWithOutputs, additionals.left);
+        childrenWithOutputs.push(child);
+        childrenWithOutputs.push.apply(childrenWithOutputs, additionals.right);
+      }
       if(outputs && outputs.length) {
         var middleOutputIndex = Math.floor((outputs.length - 1) / 2);
         if (downstream) {
@@ -552,12 +554,14 @@ function _addOutputs(vertex) {
           }
         }
         else {
-          childrenWithOutputs.removeObject(child);
-
           outputs.forEach(function (output, index) {
             output.depth = vertex.depth;
             if (index === middleOutputIndex) {
-              output._setChildren([child]);
+              var outputChildren = [];
+              outputChildren.push.apply(outputChildren, additionals.left);
+              outputChildren.push(child);
+              outputChildren.push.apply(outputChildren, additionals.right);
+              output._setChildren(outputChildren);
             }
             childrenWithOutputs.push(output);
           });
