@@ -694,7 +694,7 @@ function _updateLinks(links, source) {
      * See https://connect.microsoft.com/IE/feedback/details/801938
      * This can be removed once the bug is fixed in all supported IE versions
      */
-    .attr("style", isIE ? "" : new Ember.Handlebars.SafeString("marker-mid: url(" + window.location.pathname + "#arrow-marker);"))
+    .attr("style", isIE ? "" : Ember.String.htmlSafe("marker-mid: url(" + window.location.pathname + "#arrow-marker);"))
     .attr('d', function(d) {
       var node = _getTargetNode(d, "x0") || source;
       var o = {x: node.x0, y: node.y0};
