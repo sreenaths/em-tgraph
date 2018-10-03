@@ -70,6 +70,7 @@ var isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.in
  *
  */
 
+function createNewGraphView() {
 var PADDING = 30, // Adding to be applied on the svg view
 
     LAYOUTS = { // The view supports two layouts - left to right and top to bottom.
@@ -993,6 +994,13 @@ var GraphView = {
     return _layout === LAYOUTS.topToBottom;
   }
 };
+
+return GraphView;
+}
+
+// TODO - Move to a better class based implementation
+var GraphView = createNewGraphView();
+GraphView.createNewGraphView = createNewGraphView;
 
 // TODO - Convert to pure ES6 style export without using an object
 export default GraphView;

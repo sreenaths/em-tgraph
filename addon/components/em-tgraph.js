@@ -12,6 +12,8 @@ export default Ember.Component.extend({
 
   classNames: ['dag-view-container'],
 
+  graphView: null,
+
   errMessage: null,
 
   isHorizontal: false,
@@ -35,7 +37,7 @@ export default Ember.Component.extend({
   }.observes('isHorizontal'),
 
   _onTglAdditionals: function () {
-    GraphView.additionalDisplay(this.get('hideAdditionals'));
+    this.graphView.additionalDisplay(this.get('hideAdditionals'));
   }.observes('hideAdditionals'),
 
   _onTglFullScreen: function () {
@@ -44,7 +46,7 @@ export default Ember.Component.extend({
 
   actions: {
     tglOrientation: function() {
-      var isTopBottom = GraphView.toggleLayouts();
+      var isTopBottom = this.graphView.toggleLayouts();
       this.set('isHorizontal', !isTopBottom);
     },
     tglAdditionals: function() {
@@ -54,7 +56,7 @@ export default Ember.Component.extend({
       this.set('isFullscreen', !this.get('isFullscreen'));
     },
     fitGraph: function () {
-      GraphView.fitGraph();
+      this.graphView.fitGraph();
     },
     configure: function () {
       this.sendAction('configure');
@@ -64,11 +66,13 @@ export default Ember.Component.extend({
   didInsertElement: function () {
     var result = DataProcessor.graphifyData(this.get('data'));
 
+    this.graphView = GraphView.createNewGraphView();
+
     if(typeof result === "string") {
       this.set('errMessage', result);
     }
     else {
-      GraphView.create(
+      this.graphView.create(
         this,
         this.get('element'),
         result
